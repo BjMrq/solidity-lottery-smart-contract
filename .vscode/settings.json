@@ -1,0 +1,11 @@
+{
+  "solidity.enabledAsYouTypeCompilationErrorCheck": true,
+  "solidity.nodemodulespackage": "solc",
+  "solidity.validationDelay": 1500,
+  "solidity.linter": "solium",
+  "editor.formatOnSave": true,
+  "solidity.defaultCompiler": "localNodeModule",
+  "solidity.compileUsingRemoteVersion": "0.8.6+commit.11564f7e",
+  "solidity.persistErrors": true,
+  "solidity.lintOnChange": true
+}
