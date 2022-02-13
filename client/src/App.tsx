@@ -33,7 +33,6 @@ function App() {
 
     lotteryContractEvents.WinnerPicked().on('data', (winnerPickedEvent: WinnerEvent) => {
       console.log(winnerPickedEvent);
-      alert(`Winner picked: ${winnerPickedEvent.returnValues.winnerAddress}`)
       setContractState(userAddress)
     }).on('error', console.error)
   }
