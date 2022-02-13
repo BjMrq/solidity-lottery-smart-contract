@@ -24,16 +24,16 @@ function App() {
     setUserIsManager(userAddress === await lotteryContractAbi.organizerAddress().call())
   }
 
-  const subscribeToContractEvents = (userAddress: string) => {
+  const subscribeToContractEvents = () => {
     lotteryContractEvents.NewParticipation()
       .on('data', (newParticipantEvent: NewParticipantEvent) => {
         console.log(newParticipantEvent);
-        setContractState(userAddress)
+        setContractState()
       }).on('error', console.error)
 
     lotteryContractEvents.WinnerPicked().on('data', (winnerPickedEvent: WinnerEvent) => {
       console.log(winnerPickedEvent);
-      setContractState(userAddress)
+      setContractState()
     }).on('error', console.error)
   }
 
@@ -43,7 +43,7 @@ function App() {
       setCurrentUser(userAddress)
       setContractState(userAddress)
 
-      subscribeToContractEvents(userAddress)
+      subscribeToContractEvents()
       
     })();
   }, []);
@@ -54,7 +54,6 @@ function App() {
       from: currentUserAddress
     })
     setCanTransactionProcessRunning(false)
-    setContractState()
   }
 
   const participateLottery = async(formEvent: ChangeEvent<HTMLFormElement>) => {
@@ -65,13 +64,12 @@ function App() {
       value: web3.utils.toWei(participantAmount, "ether")
     })
     setCanTransactionProcessRunning(false)
-    setContractState()
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <h2>Lottery</h2>
+        <h2>Smart Lottery</h2>
         <p>
           Potential jackpot {lotteryBalance && web3.utils.fromWei(lotteryBalance, "ether")}!
         </p>
