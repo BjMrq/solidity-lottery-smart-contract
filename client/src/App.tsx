@@ -1,7 +1,8 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import './App.css';
-import { lotteryContractAbi } from './contract/lottery-contract';
+import { lotteryContractAbi, lotteryContractEvents } from './contract/lottery-contract';
 import web3 from './contract/web3-instance';
+import { NewParticipantEvent, WinnerEvent } from "./types/abi-events";
 
 function App() {
   const [userIsManager, setUserIsManager] = useState(false)
@@ -23,11 +24,28 @@ function App() {
     setUserIsManager(userAddress === await lotteryContractAbi.organizerAddress().call())
   }
 
+  const subscribeToContractEvents = (userAddress: string) => {
+    lotteryContractEvents.NewParticipation()
+      .on('data', (newParticipantEvent: NewParticipantEvent) => {
+        console.log(newParticipantEvent);
+        setContractState(userAddress)
+      }).on('error', console.error)
+
+    lotteryContractEvents.WinnerPicked().on('data', (winnerPickedEvent: WinnerEvent) => {
+      console.log(winnerPickedEvent);
+      alert(`Winner picked: ${winnerPickedEvent.returnValues.winnerAddress}`)
+      setContractState(userAddress)
+    }).on('error', console.error)
+  }
+
   useEffect(() => {
     (async () => {
       const userAddress = (await web3.eth.getAccounts())[0]
       setCurrentUser(userAddress)
       setContractState(userAddress)
+
+      subscribeToContractEvents(userAddress)
+      
     })();
   }, []);
 

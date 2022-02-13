@@ -1,12 +1,12 @@
-import BN from 'bn.js';
-import BigNumber from 'bignumber.js';
+import BN from "bn.js";
+import BigNumber from "bignumber.js";
 import {
   PromiEvent,
   TransactionReceipt,
   EventResponse,
   EventData,
   Web3ContractContext,
-} from 'ethereum-abi-types-generator';
+} from "ethereum-abi-types-generator";
 
 export interface CallOptions {
   from?: string;
@@ -51,7 +51,7 @@ export interface MethodConstantReturnContext<TCallReturn> {
   encodeABI(): string;
 }
 
-export interface MethodReturnContext extends MethodPayableReturnContext {}
+export type MethodReturnContext = MethodPayableReturnContext;
 
 export type ContractContext = Web3ContractContext<
   LotteryContractAbi,
@@ -59,29 +59,29 @@ export type ContractContext = Web3ContractContext<
   LotteryContractAbiEventsContext,
   LotteryContractAbiEvents
 >;
-export type LotteryContractAbiEvents = 'InfoAddressAction';
+export type LotteryContractAbiEvents = "NewParticipation";
 export interface LotteryContractAbiEventsContext {
-  InfoAddressAction(
+  NewParticipation(
     parameters: {
       filter?: {};
       fromBlock?: number;
-      toBlock?: 'latest' | number;
+      toBlock?: "latest" | number;
       topics?: string[];
     },
     callback?: (error: Error, event: EventData) => void
   ): EventResponse;
 }
 export type LotteryContractAbiMethodNames =
-  | 'new'
-  | 'canParticipate'
-  | 'getAllParticipators'
-  | 'getBalance'
-  | 'getNumberOfParticipators'
-  | 'getParticipatorAddress'
-  | 'organizerAddress'
-  | 'participateLottery'
-  | 'pickWinner';
-export interface InfoAddressActionEventEmittedResponse {
+  | "new"
+  | "canParticipate"
+  | "getAllParticipators"
+  | "getBalance"
+  | "getNumberOfParticipators"
+  | "getParticipatorAddress"
+  | "organizerAddress"
+  | "participateLottery"
+  | "pickWinner";
+export interface NewParticipationEventEmittedResponse {
   organizerAddress: string;
   value: string;
 }
@@ -92,7 +92,7 @@ export interface LotteryContractAbi {
    * StateMutability: nonpayable
    * Type: constructor
    */
-  'new'(): MethodReturnContext;
+  "new"(): MethodReturnContext;
   /**
    * Payable: false
    * Constant: true

@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc-watch --noClear --onSuccess \"node ./dist/compile.js\"",
-    "deploy": "tsc && node ./dist/deploy.js",
+    "deploy": "tsc && yarn test && node ./dist/deploy.js",
     "test": "ts-mocha contracts/**/*.test.ts"
   },
   "author": "",

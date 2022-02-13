@@ -11,14 +11,17 @@ contract Lottery {
         mapping(address => mapping(int32 => bool)) participated;
     }
 
-    event InfoAddressAction(address organizerAddress, string value);
+    event NewParticipation(
+        address indexed participantAddress,
+        uint256 indexed participationValue
+    );
+    event WinnerPicked(address indexed winnerAddress);
 
     Set registry;
 
     constructor() {
         organizerAddress = msg.sender;
         lotteryRoundNumber = 1;
-        emit InfoAddressAction(msg.sender, "Has started a new lottery");
     }
 
     modifier restricted() {
@@ -34,8 +37,6 @@ contract Lottery {
     function registerParticipator(address participatorAddress) private {
         registry.currentParticipatorsAddresses.push(participatorAddress);
         registry.participated[participatorAddress][lotteryRoundNumber] = true;
-
-        emit InfoAddressAction(participatorAddress, "Just registered");
     }
 
     function isNotRegistered(address addressToValidates)
@@ -76,7 +77,7 @@ contract Lottery {
             pseudoRandom() % registry.currentParticipatorsAddresses.length
         ];
 
-        emit InfoAddressAction(winnerAddress, "Won the lottery!");
+        emit WinnerPicked(winnerAddress);
 
         return winnerAddress;
     }
@@ -104,6 +105,8 @@ contract Lottery {
         );
 
         registerParticipator(newParticipatorAddress);
+
+        emit NewParticipation(organizerAddress, transactionAmount);
     }
 
     function getParticipatorAddress(uint104 participatorNumber)
